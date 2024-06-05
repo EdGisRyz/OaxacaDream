@@ -1,0 +1,27 @@
+<div class="container">
+        
+    <div class = "container text-center" style="margin: 30px ">
+        <h2>Sistema de Reserva</h2>
+    </div>
+
+    <table class="table table-striped table-hover align-middle">
+        <thead class = "table-dark">
+          <tr>
+            <th scope="col1">Id_Tour</th>
+            <th scope="col2">Nombre del Tour</th>
+            <th scope="col3">Detalles</th>
+            <th scope="col4">Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tour of tours; track tour.idTour){
+          <tr>
+            <td> {{tour.idTour}}</td>
+            <td> {{tour.nombreDelTour}}</td>
+            <td> {{tour.detalles}}</td>
+            <td> {{tour.precio}}</td>
+          </tr>
+        }
+        </tbody>
+      </table>
+</div>

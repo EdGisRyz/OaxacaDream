@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Usuario } from '../usuario';
-import { UsuarioService } from '../usuario.service';
+import { Usuario } from '../models/usuario';
+import { UsuarioService } from '../service/usuario.service';
 
 @Component({
   selector: 'app-usuario-lista',
@@ -9,6 +9,7 @@ import { UsuarioService } from '../usuario.service';
   templateUrl: './usuario-lista.component.html'
 })
 export class UsuarioListaComponent {
+  
   usuarios: Usuario[];
 
   constructor(private usuariosServicio: UsuarioService ){}
