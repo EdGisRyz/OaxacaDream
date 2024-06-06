@@ -17,8 +17,11 @@ export class tourService {
     return this.clienteHttp.get<Tour[]>(this.urlBase);
   }
 
+
+
   getTours(): Observable<any> {
     return this.clienteHttp.get(this.urlBase);
   }
+  
 
 }

@@ -26,4 +26,13 @@ export class UsuarioService {
   getUsers(): Observable<any>{
     return this.clienteHttp.get(this.urlBase);
   }
+
+  editarusuarioTour(id: number, usuario: Usuario): Observable<Object>{
+    return this.clienteHttp.put(`${this.urlBase}/${id}`, usuario);
+  }
+
+  eliminarUsuarioTour(id: number): Observable<Object>{
+    return this.clienteHttp.delete(`${this.urlBase}/${id}`);
+  }
+
 }

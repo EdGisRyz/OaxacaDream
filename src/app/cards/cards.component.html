@@ -1,0 +1,54 @@
+<div class="container">
+  <!-- Row to contain the cards and center them -->
+  <div class="row justify-content-center">
+    <!-- Loop through tours -->
+    @for( tour of tours; track tour.idTour; let index = $index){
+    <div class="col-12 col-md-6 col-lg-4 my-3 d-flex justify-content-center">
+      <div class="card" style="width: 100%">
+        <img [src]="getImageForTour(index)" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{ tour.nombreDelTour }}</h5>
+          <p class="card-text">Descripcion: {{ tour.detalles }}</p>
+          <p class="card-text">Precio: ${{ tour.precio }}</p>
+          @if(usuarioLogeado()){
+          <button
+            (click)="suscribirse(tour.idTour)"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#modalMensaje"
+          >
+            Suscribirse
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modalMensaje"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ mensaje }}
+      </div>
+    </div>
+  </div>
+</div>

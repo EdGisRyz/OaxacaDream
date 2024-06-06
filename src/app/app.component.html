@@ -2,212 +2,166 @@
 <!-- <app-tour-lista></app-tour-lista> -->
 <!-- <app-plantilla></app-plantilla> -->
 
-
-<!-- Barra inicial de la Pagina -->
-<header>
-
-  <nav>
-        <a href="#" (click)="reloadPage()">Inicio</a>
-        <a href="#" (click)="openModal
-        ('Login')">Login</a>
-        <a href="#" (click)="openModal('Acerca de')">Acerca de</a>
-        <a href="#" (click)="openModal('Mis Viajes')">Mis Viajes</a>
-  </nav>
-
-  <div *ngIf="loginModalVisible">
-    <!-- Contenido del modal de Login -->
-    <h2>Iniciar sesión</h2>
-    <form>
-      <!-- Aquí colocas los campos del formulario para iniciar sesión -->
-      <input type="text" placeholder="Usuario" [(ngModel)]="username">
-      <input type="password" placeholder="Contraseña" [(ngModel)]="password">
-      <button type="submit">Iniciar sesión</button>
-    </form>
-    <a href="#" (click)="closeModal('Login')">Cerrar</a>
-  </div>
-  
-  <div *ngIf="acercaDeModalVisible">
-    <!-- Contenido del modal de Acerca de -->
-    <h2>Acerca de</h2>
-    <p>Aquí puedes colocar información sobre tu aplicación o proyecto.</p>
-    <a href="#" (click)="closeModal('Acerca de')">Cerrar</a>
-  </div>
-  
-  <div *ngIf="misViajesModalVisible">
-    <!-- Contenido del modal de Mis Viajes -->
-    <h2>Mis Viajes</h2>
-    <p>Aquí puedes colocar información sobre los viajes del usuario.</p>
-    <a href="#" (click)="closeModal('Mis Viajes')">Cerrar</a>
-  </div>
-
-  <section class="textos-header">
-      <h1>Las mejores experiencias y atractivos turisticos en OAXACA</h1>
-      <h2>Seguridad y Confort</h2>
-  </section>
-
-  <div class="wave" style="height: 150px; overflow: hidden;">
-      <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
-          <path d="M0.00,49.98 C150.00,150.00 349.20,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: #fff;"></path>
-      </svg>
-  </div>
-
-</header>
-
+<app-navbar></app-navbar>
 <!-- Cuerpo de la pagina -->
-<main>  
-
+<main>
   <section class="contenedor sobre-nosotros">
-      <h2 class="titulo">Nuestro producto</h2>
-      <div class="contenedor-sobre-nosotros">
-          <img src="assets/img/ilustracion2.svg" alt="" class="imagen-about-us">
-          <div class="contenido-textos">
-              <h3><span>1</span>Los mejores productos</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt veniam eius aspernatur ad
-                  consequuntur aperiam minima sed dicta odit numquam sapiente quam eum, architecto animi pariatur,
-                  velit doloribus laboriosam ut.</p>
-              <h3><span>2</span>Los mejores productos</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt veniam eius aspernatur ad
-                  consequuntur aperiam minima sed dicta odit numquam sapiente quam eum, architecto animi pariatur,
-                  velit doloribus laboriosam ut.</p>
-          </div>
-      </div>
+    <h2 class="titulo">Nuestro producto</h2>
+    <app-cards></app-cards>
   </section>
 
   <section class="portafolio">
-      <div class="contenedor">
-          <h2 class="titulo">Galería de Fotos</h2>
-          <div class="galeria-port">
-              <div class="imagen-port">
-                  <img src="assets/img/img1.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img2.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img3.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img1.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img4.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img5.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img6.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
-              <div class="imagen-port">
-                  <img src="assets/img/img7.jpg" alt="">
-                  <div class="hover-galeria">
-                      <img src="assets/img/icono1.png" alt="">
-                      <p>Nuestro trabajo</p>
-                  </div>
-              </div>
+    <div class="contenedor">
+      <h2 class="titulo">Galería de Fotos</h2>
+      <div class="galeria-port">
+        <div class="imagen-port my-3">
+          <img src="assets\img\HierveAgua-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 1</p>
           </div>
-      </div>
-  </section>
-  <section class="clientes contenedor">
-      <h2 class="titulo">Que dicen nuestros clientes</h2>
-      <div class="cards">
-          <div class="card">
-              <img src="assets\img\ImgJuan.jpg" alt="">
-              <!-- Imprimimos solamente el usuario de la posicion 0  -->
-              @if (usuarios.length > 0) {
-              <div class="contenido-texto-card">
-                  <h4>{{usuarios[1].nombre}} {{usuarios[1].apellido_Paterno}}</h4>
-                  <p>Realmente es una experiencia increible, la disfrute al maximo.<br>
-                    Sin embargo, creo que la Pagina Web aun puede mejorar... animo!!!</p>
-              </div>
-            }
-            </div>
-          <div class="card">
-              <img src="assets\img\ImgIlian.jpg" alt="">
-              <!-- Imprimimos solamente el usuario de la posicion 1  -->
-              @if (usuarios.length > 0) {
-                <div class="contenido-texto-card">
-                    <h4>{{usuarios[0].nombre}} {{usuarios[0].apellido_Paterno}}</h4>
-                    <p>Realmente es una experiencia increible, la disfrute al maximo.<br>
-                      Sin embargo, creo que la Pagina Web aun puede mejorar... animo!!!</p>
-                </div>
-              }
+        </div>
+        <div class="imagen-port my-3">
+          <img src="assets\img\MonteAlban-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 2</p>
           </div>
+        </div>
+        <div class="imagen-port my-3">
+          <img src="assets\img\PersonaGuia-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 3</p>
+          </div>
+        </div>
+        <div class="imagen-port my-3">
+          <img src="assets\img\MonteAlban2-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 4</p>
+          </div>
+        </div>
+        <div class="imagen-port">
+          <img src="assets\img\Zicatela-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 5</p>
+          </div>
+        </div>
+        <div class="imagen-port">
+          <img src="assets\img\LaReforma-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 6</p>
+          </div>
+        </div>
+        <div class="imagen-port">
+          <img src="assets\img\AguaTermal-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 7</p>
+          </div>
+        </div>
+        <div class="imagen-port">
+          <img src="assets\img\SanJose-Galery.jpg" alt="" />
+          <div class="hover-galeria">
+            <img src="assets/img/icono1.png" alt="" />
+            <p>Fotografia 8</p>
+          </div>
+        </div>
       </div>
+    </div>
   </section>
+  <section class="clientes contenedor my-3">
+    <h2 class="titulo">Que dicen nuestros clientes</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="assets\img\ImgJuan.jpg" alt="" />
+        <!-- Imprimimos solamente el usuario de la posicion 0  -->
+        @if (usuarios.length > 0) {
+        <div class="contenido-texto-card">
+          <h4>{{ usuarios[1].nombre }} {{ usuarios[1].apellido_Paterno }}</h4>
+          <p>
+            "La pasión y el conocimiento del equipo de Oaxaca Dreams hicieron de
+            nuestro viaje una aventura única. Nos sentimos seguros y bien
+            cuidados durante todo el recorrido. La dedicación a la
+            sostenibilidad y el respeto por la cultura local es verdaderamente
+            admirable. ¡Altamente recomendado!"
+          </p>
+        </div>
+        }
+      </div>
+      <div class="card">
+        <img src="assets\img\ImgIlian.jpg" alt="" />
+        <!-- Imprimimos solamente el usuario de la posicion 1  -->
+        @if (usuarios.length > 0) {
+        <div class="contenido-texto-card">
+          <h4>{{ usuarios[0].nombre }} {{ usuarios[0].apellido_Paterno }}</h4>
+          <p>
+            "Oaxaca Dreams nos brindó una experiencia inolvidable. Desde la
+            organización hasta la atención del guía, todo fue impecable. Nos
+            encantó cómo combinan el turismo con la conservación del medio
+            ambiente. Definitivamente volveremos para explorar más de Oaxaca con
+            ellos."
+          </p>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+  
   <section class="about-services">
-      <div class="contenedor">
-          <h2 class="titulo">Nuestros servicios</h2>
-          <div class="servicio-cont">
-              <div class="servicio-ind">
-                  <img src="assets/img/ilustracion1.svg" alt="">
-                  <h3>Tours</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, qui?</p>
-              </div>
-              <div class="servicio-ind">
-                  <img src="assets/img/ilustracion4.svg" alt="">
-                  <h3>Traslados de Lujo</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, qui?</p>
-              </div>
-              <div class="servicio-ind">
-                  <img src="assets/img/ilustracion3.svg" alt="">
-                  <h3>Guias Bilingües</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, qui?</p>
-              </div><br>
+    <div class="contenedor">
+      <h2 class="titulo">Nuestros servicios</h2>
+      <div class="servicio-cont">
+        <div class="servicio-ind">
+          <img src="assets/img/ilustracion1.svg" alt="" />
+          <h3>Tours</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            qui?
+          </p>
+        </div>
+        <div class="servicio-ind">
+          <img src="assets/img/ilustracion3.svg" alt="" />
+          <h3>Guias Bilingües</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            qui?
+          </p>
+        </div>
 
-              <div class="servicio-ind">
-                <img src="assets\img\ConductorCap.svg" alt=""> 
-                <h3>Conductores Capacitados</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, qui?</p>
-            </div>
-          </div>
+        <div class="servicio-ind">
+          <img src="assets\img\ConductorCap.svg" alt="" />
+          <h3>Conductores Capacitados</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            qui?
+          </p>
+        </div>
       </div>
+    </div>
   </section>
 </main>
 
 <footer>
   <div class="contenedor-footer">
-      <div class="content-foo">
-          <h4>Celular</h4>
-          <p>+52 951 105 5591</p>
-      </div>
-      <div class="content-foo">
-          <h4>Correo Electronico</h4>
-          <p>oaxacadreams&#64;gmail.com</p>
-      </div>
-      <div class="content-foo">
-          <h4>Ubicación</h4>
-          <p>Vicente Guerrero 105 Colonia Centro Centro, <br>
-            68000 Oaxaca de Juárez, Oax.</p>
-      </div>
+    <div class="content-foo">
+      <h4>Celular</h4>
+      <p>+52 951 105 5591</p>
+    </div>
+    <div class="content-foo">
+      <h4>Correo Electronico</h4>
+      <p>oaxacadreams&#64;gmail.com</p>
+    </div>
+    <div class="content-foo">
+      <h4>Ubicación</h4>
+      <p>
+        Vicente Guerrero 105 Colonia Centro Centro, <br />
+        68000 Oaxaca de Juárez, Oax.
+      </p>
+    </div>
   </div>
-  <h6 class="titulo-final"> Oaxaca ~ Dreams</h6>
+  <h6 class="titulo-final">Oaxaca ~ Dreams</h6>
 </footer>

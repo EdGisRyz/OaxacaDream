@@ -1,3 +1,5 @@
+import { Tour } from "./tour";
+
 export class Usuario {
     idUsuario: number;
     nombre: string;
@@ -6,4 +8,6 @@ export class Usuario {
     telefono: string;
     correo_Electronico: string;
     contrasena: string;
+
+    tours: Tour[];
 }
