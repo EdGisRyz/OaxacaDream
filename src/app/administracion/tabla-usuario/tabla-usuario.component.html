@@ -1,0 +1,266 @@
+
+<div class="container">
+    <!-- Tabla de Usuarios Administradores -->
+  <div class="row mt-6">
+    <div class="col-md-12 col-12">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4><i class="fa-solid fa-users mx-2"></i> Usuarios Administradores</h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalUsuario"
+                (click)="nuevoUsuario('Administrador')"
+              >
+                <i class="fa-solid fa-plus"></i> Agregar
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Telefono</th>
+                  <th>Area</th>
+                  <th>Correo</th>
+                  <th>Contraseña</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (usuario of usuariosAdmin; track usuario.idUsuario) {
+                <tr>
+                  <td>{{ usuario.nombre }} {{ usuario.apPaterno }}</td>
+                  <td>{{ usuario.telefono }}</td>
+                  <td>{{ usuario.tipo }}</td>
+                  <td>{{ usuario.email }}</td>
+                  <td>{{ usuario.contrasena }}</td>
+                  <td>
+                    <a
+                      class="btn btn-primary mx-2 my-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalUsuario"
+                      (click)="prepararUsuario(usuario)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Editar
+                    </a>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<!-- Tabla de Usuarios tipo cliente -->
+  <div class="row mt-6" style="margin-top: 20px; margin-bottom: 50px;">
+    <div class="col-md-12 col-12">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4><i class="fa-solid fa-users mx-2"></i> Lista de Clientes</h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalUsuario"
+                (click)="nuevoUsuario('Cliente')"
+              >
+                <i class="fa-solid fa-plus"></i> Agregar
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Telefono</th>
+                  <th>Area</th>
+                  <th>Correo</th>
+                  <th>Contraseña</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (usuario of usuariosCliente; track usuario.idUsuario) {
+                <tr>
+                  <td>{{ usuario.nombre }} {{ usuario.apPaterno }}</td>
+                  <td>{{ usuario.telefono }}</td>
+                  <td>{{ usuario.tipo }}</td>
+                  <td>{{ usuario.email }}</td>
+                  <td>{{ usuario.contrasena }}</td>
+                  <td>
+                    <a
+                      class="btn btn-primary mx-2 my-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalUsuario"
+                      (click)="prepararUsuario(usuario)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Editar
+                    </a>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Modal generar pago -->
+<div
+  class="modal fade"
+  id="modalUsuario"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Completar Datos</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #botonCerrarUsuario
+          (click)="limpiarDatosUsuario()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <jjwins-alert-messages> </jjwins-alert-messages>
+        </div>
+        <form #usuarioForm="ngForm" (ngSubmit)="accionUsuario()">
+          <div class="mb-3">
+            <label for="nombreUsuario" class="form-label">Nombre</label>
+            <input
+              type="text"
+              id="nombreUsuario"
+              name="nombre"
+              class="form-control"
+              [(ngModel)]="usuario.nombre"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioPat" class="form-label">Apellido Paterno</label>
+            <input
+              type="text"
+              id="usuarioPat"
+              name="apPaterno"
+              class="form-control"
+              [(ngModel)]="usuario.apPaterno"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioPat" class="form-label">Apellido Materno</label>
+            <input
+              type="text"
+              id="usuarioPat"
+              name="apMaterno"
+              class="form-control"
+              [(ngModel)]="usuario.apMaterno"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioEmail" class="form-label">Email</label>
+            <input
+              type="text"
+              id="usuarioEmail"
+              name="email"
+              class="form-control"
+              [(ngModel)]="usuario.email"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioContrasena" class="form-label">Contrasena</label>
+            <input
+              type="text"
+              id="usuarioContrasena"
+              name="contrasena"
+              class="form-control"
+              [(ngModel)]="usuario.contrasena"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioTelefono" class="form-label">Telefono</label>
+            <input
+              type="text"
+              id="usuarioTelefono"
+              name="telefono"
+              class="form-control"
+              [(ngModel)]="usuario.telefono"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioTipo" class="form-label">Area</label>
+            <input
+              type="text"
+              id="usuarioTipo"
+              name="tipo"
+              class="form-control"
+              [(ngModel)]="usuario.tipo"
+              disabled
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioFecha" class="form-label">Fecha Registro</label>
+            <input
+              type="text"
+              id="usuarioFecha"
+              name="fechaRegistro"
+              class="form-control"
+              [(ngModel)]="usuario.fechaRegistro"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="usuarioDireccion" class="form-label">Direccion</label>
+            <input
+              type="text"
+              id="usuarioDireccion"
+              name="direccion"
+              class="form-control"
+              [(ngModel)]="usuario.direccion"
+            />
+          </div>
+
+          <div class="modal-footer">
+            @if(usuario.idUsuario != 0){
+                <button
+                  class="btn btn-danger"
+                  (click)="eliminarUsuario(usuario, $event)"
+                >
+                  <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+                }
+                <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

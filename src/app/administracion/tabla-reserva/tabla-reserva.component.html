@@ -1,0 +1,203 @@
+<div class="container">
+  <!-- Tabla de Reservas -->
+  <div class="row mt-6" style="margin-top: 20px; margin-bottom: 50px">
+    <div class="col-md-12 col-12">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4>
+                <i class="fa-solid fa-users mx-2"></i> Reservas Registrados
+              </h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalReserva"
+                (click)="nuevaReserva()"
+              >
+                <i class="fa-solid fa-plus"></i> Agregar
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Nombre Tour</th>
+                  <th>Nombre Cliente</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                  <th>Cantidad</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (reserva of reservas; track reserva.idReserva) {
+                <tr>
+                  <td>{{ reserva.tour.nombre }}</td>
+                  <td>{{ reserva.usuario.nombre }}</td>
+                  <td>{{ reserva.fechaReserva | date : "longDate" }}</td>
+                  <td>{{ reserva.estado }}</td>
+                  <td>{{ reserva.cantidad }}</td>
+                  <td>
+                    <a
+                      class="btn btn-primary mx-2 my-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalReserva"
+                      (click)="prepararReserva(reserva)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Editar
+                    </a>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para reservas -->
+<div
+  class="modal fade"
+  id="modalReserva"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Completar Datos</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #botonCerrarReserva
+          (click)="limpiarDatosReserva()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <jjwins-alert-messages> </jjwins-alert-messages>
+        </div>
+        <form #reservaForm="ngForm" (ngSubmit)="accionReserva()">
+          @if(reserva.idReserva === 0){
+          <div class="mb-3">
+            <label for="reservaUsuario" class="form-label">Usuario</label>
+            <select
+              type="text"
+              id="reservaUsuario"
+              name="usuario"
+              class="form-control"
+              [(ngModel)]="reserva.usuario"
+            >
+              <option value="" disabled selected>Seleccione un cliente</option>
+              @for (cliente of usuariosCliente; track cliente.idUsuario){
+              <option [ngValue]="cliente">
+                {{ cliente.nombre }} {{ cliente.apPaterno }}
+              </option>
+              }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="reservaTour" class="form-label">Tour</label>
+            <select
+              type="text"
+              id="reservaTour"
+              name="tour"
+              class="form-control"
+              [(ngModel)]="reserva.tour"
+            >
+              <option value="" disabled selected>Seleccione un tour</option>
+              @for (tour of tours; track tour.idTour){
+              <option [ngValue]="tour">
+                {{ tour.nombre }}
+              </option>
+              }
+            </select>
+          </div>
+          } @else {
+            <div class="mb-3">
+                <label for="reservaClient" class="form-label">Cliente</label>
+                <input
+                  type="text"
+                  id="reservaClient"
+                  name="usuario"
+                  class="form-control"
+                  [(ngModel)]="reserva.usuario.nombre"
+                  disabled
+                />
+              </div>
+              <div class="mb-3">
+                <label for="reservaName" class="form-label">Tour</label>
+                <input
+                  type="text"
+                  id="reservaName"
+                  name="tour"
+                  class="form-control"
+                  [(ngModel)]="reserva.tour.nombre"
+                  disabled
+                />
+              </div>
+          }
+
+          <div class="mb-3">
+            <label for="reservaFecha" class="form-label">Fecha Reserva</label>
+            <input
+              type="text"
+              id="reservaFecha"
+              name="fechaReserva"
+              class="form-control"
+              [(ngModel)]="reserva.fechaReserva"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="reservaEstado" class="form-label">Estado</label>
+            <input
+              type="text"
+              id="reservaEstado"
+              name="estado"
+              class="form-control"
+              [(ngModel)]="this.reserva.estado"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="reservaCantidad" class="form-label"
+              >Cantidad de personas</label
+            >
+            <input
+              type="number"
+              id="reservaCantidad"
+              name="cantidad"
+              class="form-control"
+              [(ngModel)]="reserva.cantidad"
+            />
+          </div>
+
+          <div class="modal-footer">
+            @if(reserva.idReserva!= 0){
+            <button
+              class="btn btn-danger"
+              (click)="eliminarReserva(reserva, $event)"
+            >
+              <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+            }
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

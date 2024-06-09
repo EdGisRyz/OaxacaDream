@@ -11,4 +11,8 @@ export class Usuario {
     tipo: string;
     fechaRegistro: string;
     direccion: string;
+
+    constructor(){
+        this.idUsuario = 0;
+    }
 }
