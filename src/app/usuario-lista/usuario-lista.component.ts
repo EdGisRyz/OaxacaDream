@@ -16,16 +16,16 @@ export class UsuarioListaComponent {
 
   ngOnInit(){
     //cargamos los usuarios
-    this.obtenerUsuarios();
+    // this.obtenerUsuarios();
   }
 
-  private obtenerUsuarios(){
-    // Consumir los datos del observable (suscribirnos)
-    this.usuariosServicio.obtenerUsuariosLista().subscribe(
-      (datos => {
-        this.usuarios = datos;
-      })
-    );
-  }
+  // private obtenerUsuarios(){
+  //   // Consumir los datos del observable (suscribirnos)
+  //   this.usuariosServicio.obtenerUsuariosLista().subscribe(
+  //     (datos => {
+  //       this.usuarios = datos;
+  //     })
+  //   );
+  // }
   
 }

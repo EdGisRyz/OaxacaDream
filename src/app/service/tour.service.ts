@@ -8,20 +8,28 @@ import { Tour } from '../models/tour';
 })
 export class tourService {
 
-  private urlBase = "http://localhost:8080/OaxacaDream-app/tours";
-
+  private urlBase = "http://localhost:8080/oaxacaDream-app/tours";
 
   constructor(private clienteHttp: HttpClient) { }
 
-  obtenerToursLista(): Observable<Tour[]>{
+  obtenerTours(): Observable<Tour[]>{
     return this.clienteHttp.get<Tour[]>(this.urlBase);
   }
 
+  agregarTour(tour: Tour): Observable<Object>{
+    return this.clienteHttp.post(this.urlBase, tour);
+  }
 
+  obtenerTourPorId(id: number){
+    return this.clienteHttp.get<Tour>(`${this.urlBase}/${id}`);
+  }
 
-  getTours(): Observable<any> {
-    return this.clienteHttp.get(this.urlBase);
+  editarTour(id: number, tour: Tour): Observable<Object>{
+    return this.clienteHttp.put(`${this.urlBase}/${id}`, tour);
+  }
+
+  eliminarTour(id: number): Observable<Object>{
+    return this.clienteHttp.delete(`${this.urlBase}/${id}`);
   }
   
-
 }

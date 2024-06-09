@@ -22,10 +22,10 @@ export class TourListaComponent {
 
   private obtenerTours(){
     // Consumir los datos del observable (suscribirnos)
-    this.tourServicio.obtenerToursLista().subscribe(
-      (datos => {
-        this.tours = datos;
-      })
-    );
+    // this.tourServicio.obtenerToursLista().subscribe(
+    //   (datos => {
+    //     this.tours = datos;
+    //   })
+    // );
   }
 }

@@ -1,0 +1,209 @@
+<app-navbar></app-navbar>
+
+<!-- row  -->
+<div class="container">
+  <div class="row mt-6">
+    <div class="col-md-12 col-12">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4><i class="fa-solid fa-users mx-2"></i> Lista de Reservas</h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a class="btn btn-primary">
+                <i class="fa-solid fa-bell"></i>
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Usuario</th>
+                  <th>Tour</th>
+                  <th>Estado</th>
+                  <th>Cantidad</th>
+                  <th>Fecha Reserva</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (reserva of reservas; track reserva.idReserva) {
+                <tr>
+                  <td>
+                    {{ reserva.usuario.nombre }} {{ reserva.usuario.apPaterno }}
+                  </td>
+                  <td>{{ reserva.tour.nombre }}</td>
+                  <td>{{ reserva.estado }}</td>
+                  <td>{{ reserva.cantidad }}</td>
+                  <td>{{ reserva.fechaReserva | date : "longDate" }}</td>
+                  <td>
+                    @if(reserva.estado.toLowerCase() === 'pendiente'){
+                    <a
+                      class="btn btn-danger my-2 mx-2"
+                      (click)="cancelarReserva(reserva)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Cancelar
+                    </a>
+                    <a
+                      class="btn btn-primary my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalPago"
+                      (click)="cargarPago(reserva)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Pago
+                    </a>
+                    }
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
+  <div class="row mt-6" style="margin-top: 20px; margin-bottom: 50px;">
+    <div class="col-md-12 col-12">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card ">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4><i class="fa-solid fa-users mx-2"></i> Lista de Pagos</h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a class="btn btn-primary">
+                <i class="fa-solid fa-bell"></i>
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Usuario</th>
+                  <th>Tour</th>
+                  <th>Estado</th>
+                  <th>Total</th>
+                  <th>Metodo</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (pago of pagos; track pago.idPago) {
+                <tr>
+                  <td>
+                    {{ pago.reserva.usuario.nombre }} {{ pago.reserva.usuario.apPaterno }}
+                  </td>
+                  <td>{{ pago.reserva.tour.nombre }}</td>
+                  <td>{{ pago.estado }}</td>
+                  <td>{{ pago.monto | number:'3.1-2'}}</td>
+                  <td>{{ pago.metodoPago.nombre}}</td>
+                  <td>
+                    @if(pago.estado.toLowerCase() === 'pendiente'){
+                    <a
+                      class="btn btn-danger my-2 mx-2"
+                      (click)="cancelarPago(pago)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Cancelar
+                    </a>
+                    <a
+                      class="btn btn-primary my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalPago"
+                      (click)="finalizarPago(pago)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Terminar
+                    </a>
+                    }
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>
+
+<div class="container ">
+    
+  </div>
+
+
+
+<!-- Modal generar pago -->
+<div
+  class="modal fade"
+  id="modalPago"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Completar Datos</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #botonCerrarPago
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <jjwins-alert-messages> </jjwins-alert-messages>
+        </div>
+        <form #pagoForm="ngForm" (ngSubmit)="agregarPago()">
+          <div class="mb-3">
+            <label for="cliente" class="form-label">Metodo de Pago</label>
+            <select
+              id="cliente"
+              name="cliente"
+              class="form-control"
+              [(ngModel)]="pago.metodoPago"
+              required
+            >
+              <option value="" disabled selected>Seleccion un metodo de pago</option>
+              @for (metodo of metodos; track metodo.idMetodopago){
+              <option [ngValue]="metodo">{{ metodo.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="monto" class="form-label">Total a pagar</label>
+            <input
+              type="number"
+              id="monto"
+              name="monto"
+              class="form-control"
+              [(ngModel)]="pago.monto"
+              disabled
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

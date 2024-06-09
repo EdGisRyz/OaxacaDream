@@ -1,43 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { tourService } from '../service/tour.service';
 import { UsuarioService } from '../service/usuario.service';
 import { UsuarioLoggedService } from '../service/usuario-logged.service';
 import { Tour } from '../models/tour';
 import { Usuario } from '../models/usuario';
+import { Reserva } from '../models/reserva';
+import { ReservaService } from '../service/reserva.service';
+import { FormsModule, NgForm } from '@angular/forms';
+import { AlertMessagesModule, AlertMessagesService } from 'jjwins-angular-alert-messages';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, AlertMessagesModule],
   templateUrl: './cards.component.html',
   styleUrl: './cards.component.css',
 })
 export class CardsComponent {
-  //Obtener Tours
-  tours: Tour[];
-  //Obtener Usuarios
-  usuarios: Usuario[];
 
+  @ViewChild("reservaForm") reservaForm: NgForm
+  @ViewChild("botonCerrarReserva") botonCerrarReserva: ElementRef
+
+  tours: Tour[];
+  usuarios: Usuario[];
+  reservas: Reserva[];
   mensaje: string
 
+  reserva: Reserva = new Reserva();
+  tour: Tour = new Tour();
+
   constructor(
-    private usuariosServicio: UsuarioService,
-    private tourServicio: tourService,
-    private usuarioLoggedService: UsuarioLoggedService
-  ) {}
+    private usuarioService: UsuarioService,
+    private tourService: tourService,
+    private usuarioLoggedService: UsuarioLoggedService,
+    private reservaService: ReservaService,
+    private router: Router,
+    private alertMessage: AlertMessagesService
+  ) { }
 
   ngOnInit() {
-    //cargamos los usuarios
-    this.obtenerUsuarios();
-    //cargamos los usuarios
     this.obtenerTours();
+    this.obtenerReservas();
   }
 
   images: string[] = [
     'assets/img/Zicatela-Galery.jpg',
     'assets/img/AguaTermal-Galery.jpg',
     'assets/img/HierveAgua-Galery.jpg',
-    // Agrega más URLs de imágenes aquí
+    'assets/img/HierveAgua-Galery.jpg',
+    'assets/img/HierveAgua-Galery.jpg',
   ];
 
   getImageForTour(index: number): string {
@@ -45,54 +57,70 @@ export class CardsComponent {
   }
 
   private obtenerTours() {
-    // Consumir los datos del observable (suscribirnos)
-    this.tourServicio.obtenerToursLista().subscribe((datos) => {
-      this.tours = datos;
-    });
+    this.tourService.obtenerTours().subscribe(
+      (datos => {
+        this.tours = datos;
+        console.log(datos)
+      })
+    );
   }
 
-  private obtenerUsuarios() {
-    // Consumir los datos del observable (suscribirnos)
-    this.usuariosServicio.obtenerUsuariosLista().subscribe((datos) => {
-      this.usuarios = datos;
-    });
+  private obtenerReservas() {
+    this.reservaService.obtenerReservas().subscribe(
+      (datos => {
+        this.reservas = datos;
+        console.log(datos)
+      })
+    );
   }
 
   usuarioLogeado(): boolean {
     return this.usuarioLoggedService.getIsLogin();
   }
 
-  suscribirse(idTour: number): void {
-    console.log(`Suscribirse al tour con ID: ${idTour}`);
-  
-    // Buscar el tour por su ID
-    let tourSeleccionado = this.tours.find((tour) => tour.idTour === idTour);
-    console.log(tourSeleccionado);
-  
-    if (tourSeleccionado) {
-      let user = this.usuarioLoggedService.getUsuario();
-      
-      // Verificar si el tour ya está en la lista del usuario
-      const tourExistente = user.tours.find(tour => tour.idTour === idTour);
-      
-      if (!tourExistente) {
-        user.tours.push(tourSeleccionado);
-        
-        this.usuariosServicio.editarusuarioTour(user.idUsuario, user).subscribe({
-          next: (datos) => {
-            console.log(datos);
-            this.usuarioLoggedService.setUsuario(user);
-            this.mensaje = 'Te has registrado a este viaje correctamente'
-          },
-          error: (errores) => console.log(errores)
-        });
-      } else {
-        this.mensaje = 'Ya estas suscrito en este viaje'
-        console.log(`El tour con ID ${idTour} ya está en la lista del usuario.`);
-      }
-    } else {
-      console.error(`No se encontró ningún tour con el ID: ${idTour}`);
-    }
+  // Método para calcular la cantidad de lugares disponibles
+  getLugaresDisponibles(): number {
+
+    const reservasConfirmadas = this.reservas.filter(reserva => reserva.tour.idTour === this.reserva.tour.idTour && reserva.estado.toLowerCase() === 'confirmada');
+
+    const cantidadReservada = reservasConfirmadas.reduce((total, reserva) => total + reserva.cantidad, 0);
+    return this.reserva.tour.capacidadMax - cantidadReservada;
   }
-  
+
+  prepararOrden(tour: Tour) {
+    this.tour = tour;
+    this.reserva.tour = tour;
+    this.reserva.usuario = this.usuarioLoggedService.getUsuario();
+    this.reserva.estado = 'Pendiente'
+  }
+
+  agregarOrden() {
+    //verificar que el tour no este ya lelno por muchas reservas
+    let disponibles = this.getLugaresDisponibles();
+    console.log('lugares disponibles: ' + disponibles)
+    if (this.reserva.cantidad > disponibles) {
+      this.alertMessage.show(`Lugares disponibles ${disponibles}`, { cssClass: 'alert alert-danger', timeOut: 3000 })
+      return;
+    }
+
+    this.reservaService.agregarReserva(this.reserva).subscribe(
+      {
+        next: (datos) => {
+          this.router.navigate(['/pagina-principal']).then(() => {
+            this.obtenerReservas();
+            this.alertMessage.show('Se ha agregado correctamente la reserva!!!', { cssClass: 'alert alert-success', timeOut: 3000 })
+            console.log('reserva agregada')
+            this.reservaForm.resetForm();
+            setTimeout(() => {
+              this.botonCerrarReserva.nativeElement.click();
+          }, 3000);
+          })
+
+        },
+        error: (error: any) => { console.log(error) }
+      }
+    );
+  }
+
+
 }

@@ -10,13 +10,14 @@
       >Login</a
     >
     } @else {
-    <a (click)="cerrarSesion()" style="cursor: pointer">Cerrar Sesion</a>
-    <a
-      data-bs-toggle="modal"
-      data-bs-target="#modalViajes"
-      style="cursor: pointer"
-      >Mis Viajes</a
-    >
+      <a (click)="cerrarSesion()" style="cursor: pointer">Cerrar Sesion</a>
+      @if(tipoUsuario() === 'cliente'){
+        <a routerLink="/reservas" style="cursor: pointer">Mis Viajes</a>
+      } 
+
+      @if(tipoUsuario() === 'administrador'){
+        <a routerLink="/administracion" style="cursor: pointer">Administracion</a>
+      } 
     }
     <a
       data-bs-toggle="modal"
@@ -74,15 +75,15 @@
             <input
               type="email"
               class="form-control"
-              id="correo_Electronico"
-              name="correo_Electronico"
-              [(ngModel)]="correo_Electronico"
+              id="email"
+              name="email"
+              [(ngModel)]="email"
             />
           </div>
           <div class="mx-3 my-3">
-            <label for="password" class="form-label">Contraseña</label>
+            <label for="contrasena" class="form-label">Contraseña</label>
             <input
-              type="password"
+              type="contrasena"
               class="form-control"
               id="contrasena"
               name="contrasena"
@@ -104,7 +105,7 @@
 </div>
 
 <!-- Modal Viajes-->
-<div
+<!-- <div
   class="modal fade"
   id="modalViajes"
   tabindex="-1"
@@ -165,7 +166,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Modal Acerca de -->
 <div
@@ -283,7 +284,7 @@
 </div>
 
 <!-- Modal Pagos -->
-<div class="modal fade" id="modalPagar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="modalPagar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header  text-white fondoMorado">
@@ -324,6 +325,4 @@
       </div>
     </div>
   </div>
-</div>
-
-
+</div> -->

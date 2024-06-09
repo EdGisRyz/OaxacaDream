@@ -9,29 +9,28 @@ import { Usuario } from '../models/usuario';
 })
 export class UsuarioService {
 
-  private urlBase = "http://localhost:8080/OaxacaDream-app/usuarios";
+  private urlBase = "http://localhost:8080/oaxacaDream-app/usuarios";
 
 
   constructor(private clienteHttp: HttpClient) { }
 
-  obtenerUsuariosLista(): Observable<Usuario[]>{
-    return this.clienteHttp.get<Usuario[]>(this.urlBase).pipe(
-      catchError((error) => {
-      console.error('Error fetching items', error);
-      return of([]);
-    })
-    );
+  obtenerUsuarios(): Observable<Usuario[]>{
+    return this.clienteHttp.get<Usuario[]>(this.urlBase);
   }
 
-  getUsers(): Observable<any>{
-    return this.clienteHttp.get(this.urlBase);
+  agregarUsuario(usuario: Usuario): Observable<Object>{
+    return this.clienteHttp.post(this.urlBase, usuario);
   }
 
-  editarusuarioTour(id: number, usuario: Usuario): Observable<Object>{
+  obtenerUsuarioPorId(id: number){
+    return this.clienteHttp.get<Usuario>(`${this.urlBase}/${id}`);
+  }
+
+  editarUsuario(id: number, usuario: Usuario): Observable<Object>{
     return this.clienteHttp.put(`${this.urlBase}/${id}`, usuario);
   }
 
-  eliminarUsuarioTour(id: number): Observable<Object>{
+  eliminarUsuario(id: number): Observable<Object>{
     return this.clienteHttp.delete(`${this.urlBase}/${id}`);
   }
 

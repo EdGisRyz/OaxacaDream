@@ -2,14 +2,16 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UsuarioService } from '../service/usuario.service';
 import { Usuario } from '../models/usuario';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UsuarioLoggedService } from '../service/usuario-logged.service';
 import { Tour } from '../models/tour';
+import { Reserva } from '../models/reserva';
+import { tourService } from '../service/tour.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterOutlet, RouterLink],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -18,104 +20,72 @@ export class NavbarComponent {
   @ViewChild("loginForm") loginForm: NgForm
   @ViewChild("botonCerrarLogin") btnCerrarLogin: ElementRef
 
-  tours: Tour[]
-  
-  usuarios: Usuario[]
-
-  correo_Electronico: string;
-  contrasena: string;
 
   usuario: Usuario = new Usuario();
+  tour: Tour = new Tour();
+  reserva: Reserva = new Reserva();
+
+  usuarios: Usuario[];
+  tours: Tour[];
+  reservas: Reserva[];
+
+
+  email: string;
+  contrasena: string;
 
   constructor(
     private usuarioService: UsuarioService,
-    private router: Router, 
-    private usuarioLoggedService: UsuarioLoggedService
+    private router: Router,
+    private usuarioLoggedService: UsuarioLoggedService,
   ) { }
 
-  ngOnInit(){
-    //cargamos los usuarios
+  ngOnInit() {
     this.obtenerUsuarios();
-    this.tours = this.usuarioLoggedService.getUsuario().tours
-  }
-
-  
-
-  eliminarTour(id: number) {
-    let user = this.usuarioLoggedService.getUsuario();
-    let tours = user.tours;
-  
-    // Filtrar la lista de tours para excluir el tour con el ID especificado
-    user.tours = tours.filter(tour => tour.idTour !== id);
-  
-    // Actualizar el usuario en el servicio
-    this.usuarioService.editarusuarioTour(user.idUsuario, user).subscribe({
-      next: (datos) => {
-        console.log(datos);
-        this.usuarioLoggedService.setUsuario(user);
-        this.tours = this.usuarioLoggedService.getUsuario().tours
-      },
-      error: (errores) => console.log(errores)
-    });
-  }
-
-  hayToursUsuario(){
-    return this.usuarioLoggedService.getUsuario().tours.length > 0  
-  }
-  
-  totalPago(){
-    if(!this.hayToursUsuario()){
-      return
-    }
-    let total = 0
-    for(let tour of this.usuarioLoggedService.getUsuario().tours){
-      total += tour.precio
-    }
-    return total
-  }
-
-  usuarioTours(){
-    console.log(this.usuarioLoggedService.getUsuario())
-    return this.usuarioLoggedService.getUsuario().tours
   }
 
   private obtenerUsuarios() {
-    this.usuarioService.obtenerUsuariosLista().subscribe(
+    this.usuarioService.obtenerUsuarios().subscribe(
       (datos => {
         this.usuarios = datos;
-        console.log(datos)
+        console.log(datos);
       })
     );
   }
 
-  cerrarSesion(){
+  cerrarSesion() {
     this.usuarioLoggedService.setIsLogin(false);
+    this.router.navigate(['/pagina-principal'])
   }
 
-  usuarioLogeado():boolean{
+  usuarioLogeado(): boolean {
     return this.usuarioLoggedService.getIsLogin();
   }
-  
+
+  tipoUsuario(): string {
+    return this.usuarioLoggedService.getUsuario().tipo.toLowerCase();
+  }
+
   login() {
     let encontrado = false
-    console.log(this.correo_Electronico);
+    console.log(this.email);
     console.log(this.contrasena)
     this.usuarios.forEach(usuario => {
-      if (this.correo_Electronico === usuario.correo_Electronico && this.contrasena == usuario.contrasena) {
-        //este usuario se actualiza en el servicio
+      if (this.email === usuario.email && this.contrasena == usuario.contrasena) {
+
         this.usuario = usuario;
         console.log('puedes entrar');
-        console.log(usuario.correo_Electronico)
-        console.log(usuario.contrasena)
         console.log(usuario)
         this.usuarioLoggedService.setUsuario(usuario);
         this.usuarioLoggedService.setIsLogin(true);
 
+        if (usuario.tipo === 'cliente') {
+            this.router.navigate(['/pagina-principal']);
+        }
         //este actualiza la variable bool para login
         encontrado = true
-            //cerramos el modal
-          this.loginForm.resetForm();
-          this.btnCerrarLogin.nativeElement.click();
+        //cerramos el modal
+        this.loginForm.resetForm();
+        this.btnCerrarLogin.nativeElement.click();
         return
       }
     })
@@ -123,7 +93,7 @@ export class NavbarComponent {
     if (!encontrado) {
       console.log('no encontrado')
       // this.alertMessage.show('Verifica tu usuario y contraseña', { cssClass: 'alert alert-warning', timeOut: 3000 })
-      this.correo_Electronico = ''
+      this.email = ''
       this.contrasena = ''
     }
 
@@ -133,5 +103,5 @@ export class NavbarComponent {
     window.location.reload();
   }
 
-  
+
 }

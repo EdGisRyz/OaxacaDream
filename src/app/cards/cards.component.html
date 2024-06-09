@@ -7,15 +7,15 @@
       <div class="card" style="width: 100%">
         <img [src]="getImageForTour(index)" class="card-img-top" alt="..." />
         <div class="card-body">
-          <h5 class="card-title">{{ tour.nombreDelTour }}</h5>
-          <p class="card-text">Descripcion: {{ tour.detalles }}</p>
+          <h5 class="card-title">{{ tour.nombre }}</h5>
+          <p class="card-text">Descripcion: {{ tour.descripcion }}</p>
           <p class="card-text">Precio: ${{ tour.precio }}</p>
           @if(usuarioLogeado()){
           <button
-            (click)="suscribirse(tour.idTour)"
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#modalMensaje"
+            (click)="prepararOrden(tour)"
           >
             Suscribirse
           </button>
@@ -38,16 +38,46 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Completar Datos</h1>
         <button
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          #botonCerrarReserva
         ></button>
       </div>
       <div class="modal-body">
-        {{ mensaje }}
+        <div>
+          <jjwins-alert-messages> </jjwins-alert-messages>
+        </div>
+        <form #reservaForm="ngForm" (ngSubmit)="agregarOrden()">
+          <div class="mb-3">
+            <label for="fechaReserva" class="form-label">Fecha de Reserva</label>
+            <input
+              type="text"
+              id="fechaReserva"
+              name="fechaReserva"
+              class="form-control"
+              [(ngModel)]="reserva.fechaReserva"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad de Peronas</label>
+            <input
+              type="number"
+              id="cantidad"
+              name="cantidad"
+              class="form-control"
+              [(ngModel)]="reserva.cantidad"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
