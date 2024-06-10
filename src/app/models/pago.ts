@@ -9,6 +9,10 @@ export class Pago {
     monto: number;
     fechaPago: Date;
     estado: string;
+
+    constructor(){
+        this.idPago = 0
+    }
     
 
 }

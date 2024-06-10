@@ -1,1 +1,69 @@
-<p>tabla-pago works!</p>
+<div class="container">
+
+    <!-- Tabla de Reservas -->
+  <div class="row mt-6" style="margin-top: 20px; margin-bottom: 50px">
+    <div class="col-md-12 col-12">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4>
+                <i class="fa-solid fa-users mx-2"></i> Reservas Registrados
+              </h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modal"
+                (click)="nuevaPago()"
+              >
+                <i class="fa-solid fa-plus"></i> Agregar
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Nombre Tour</th>
+                  <th>Nombre Cliente</th>
+                  <th>Metodo de Pago</th>
+                  <th>Estado</th>
+                  <th>Cantidad</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (pago of pagos; track pago.idPago) {
+                <tr>
+                  <td>{{ pago.reserva.tour.nombre }}</td>
+                  <td>{{ pago.reserva.usuario.nombre}}</td>
+                  <td>{{ pago.metodoPago.nombre  }}</td>
+                  <td>{{ pago.estado }}</td>
+                  <td>{{ pago.monto }}</td>
+                  <td>
+                    <a
+                      class="btn btn-primary mx-2 my-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modal"
+                      (click)="prepararPago(pago)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Editar
+                    </a>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>

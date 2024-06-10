@@ -94,7 +94,18 @@ export class CardsComponent {
     this.reserva.estado = 'Pendiente'
   }
 
+  getExisteReservaUsuarioTour(): boolean {
+    return this.reservas.some( reserva => reserva.tour.idTour === this.reserva.tour.idTour && reserva.usuario.idUsuario === this.reserva.usuario.idUsuario && reserva.estado.toLowerCase() !== 'cancelada');
+  }
+
   agregarOrden() {
+
+    if(this.getExisteReservaUsuarioTour()){
+      console.log('El usuario y tour ya tiene una reserva');
+      this.alertMessage.show('El usuario cuenta con una reserva para el tour ', { cssClass: 'alert alert-warning', timeOut: 2000 })
+      return
+    }
+
     //verificar que el tour no este ya lelno por muchas reservas
     let disponibles = this.getLugaresDisponibles();
     console.log('lugares disponibles: ' + disponibles)
@@ -120,6 +131,10 @@ export class CardsComponent {
         error: (error: any) => { console.log(error) }
       }
     );
+  }
+
+  limpiarDatosReserva(){
+    this.reserva = new Reserva();
   }
 
 

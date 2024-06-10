@@ -12,7 +12,9 @@
               <h4><i class="fa-solid fa-users mx-2"></i> Lista de Reservas</h4>
             </div>
             <div>
-              <jjwins-alert-messages> </jjwins-alert-messages>
+              <!-- @if(tabla === 'reserva'){
+                <jjwins-alert-messages> </jjwins-alert-messages>
+              } -->
             </div>
             <div class="ml-auto">
               <a class="btn btn-primary">
@@ -70,18 +72,19 @@
     </div>
   </div>
 
-
-  <div class="row mt-6" style="margin-top: 20px; margin-bottom: 50px;">
+  <div class="row mt-6" style="margin-top: 20px; margin-bottom: 50px">
     <div class="col-md-12 col-12">
       <!-- card  -->
       <section id="Empleados">
-        <div class="card ">
+        <div class="card">
           <div class="card-header bg-white py-4 d-flex justify-content-between">
             <div class="mt-2">
               <h4><i class="fa-solid fa-users mx-2"></i> Lista de Pagos</h4>
             </div>
             <div>
-              <jjwins-alert-messages> </jjwins-alert-messages>
+              <!-- @if(tabla === 'pago'){
+                <jjwins-alert-messages> </jjwins-alert-messages>
+              } -->
             </div>
             <div class="ml-auto">
               <a class="btn btn-primary">
@@ -105,12 +108,13 @@
                 @for (pago of pagos; track pago.idPago) {
                 <tr>
                   <td>
-                    {{ pago.reserva.usuario.nombre }} {{ pago.reserva.usuario.apPaterno }}
+                    {{ pago.reserva.usuario.nombre }}
+                    {{ pago.reserva.usuario.apPaterno }}
                   </td>
                   <td>{{ pago.reserva.tour.nombre }}</td>
                   <td>{{ pago.estado }}</td>
-                  <td>{{ pago.monto | number:'3.1-2'}}</td>
-                  <td>{{ pago.metodoPago.nombre}}</td>
+                  <td>{{ pago.monto | number : "3.1-2" }}</td>
+                  <td>{{ pago.metodoPago.nombre }}</td>
                   <td>
                     @if(pago.estado.toLowerCase() === 'pendiente'){
                     <a
@@ -119,10 +123,12 @@
                     >
                       <i class="fas fa-angle-double-right"></i> Cancelar
                     </a>
-                    <a
+                    }
+                    @if(pago.estado.toLowerCase() !== 'cancelada'){
+                      <a
                       class="btn btn-primary my-2 mx-2"
                       data-bs-toggle="modal"
-                      data-bs-target="#modalPago"
+                      data-bs-target="#modalComprobante"
                       (click)="finalizarPago(pago)"
                     >
                       <i class="fas fa-angle-double-right"></i> Terminar
@@ -138,14 +144,9 @@
       </section>
     </div>
   </div>
-
 </div>
 
-<div class="container ">
-    
-  </div>
-
-
+<div class="container"></div>
 
 <!-- Modal generar pago -->
 <div
@@ -169,7 +170,9 @@
       </div>
       <div class="modal-body">
         <div>
-          <jjwins-alert-messages> </jjwins-alert-messages>
+          @if(tabla === 'reserva'){
+            <jjwins-alert-messages> </jjwins-alert-messages>
+          }
         </div>
         <form #pagoForm="ngForm" (ngSubmit)="agregarPago()">
           <div class="mb-3">
@@ -181,7 +184,9 @@
               [(ngModel)]="pago.metodoPago"
               required
             >
-              <option value="" disabled selected>Seleccion un metodo de pago</option>
+              <option value="" disabled selected>
+                Seleccion un metodo de pago
+              </option>
               @for (metodo of metodos; track metodo.idMetodoPago){
               <option [ngValue]="metodo">{{ metodo.nombre }}</option>
               }
@@ -201,6 +206,85 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para subir comprobante -->
+<div
+  class="modal fade"
+  id="modalComprobante"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Completar Datos</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #botonCerrarComprobante
+          (click)="limpiarImagenes()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          @if(tabla === 'pago'){
+            <jjwins-alert-messages> </jjwins-alert-messages>
+          }
+        </div>
+        <form #comprobanteForm="ngForm" (ngSubmit)="accionEditar()">
+          @if(imagenUrl){
+            <p>Tu pago se encuentra en validacion</p>
+          <div class="image-container my-2">
+            <img
+              [src]="imagenUrl"
+              alt="Imagen de la prenda"
+              class="centered-and-resized"
+            />
+          </div>
+          } @else {
+          <div class="my-1">
+            <div class="mx-auto w-100">
+              <label class="text-center mb-3">Agregar Imagen Usuario</label>
+              <div class="input-group">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="image"
+                  (change)="onFileChange($event)"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                  required
+                />
+              </div>
+            </div>
+            @if(previewUrl){
+            <div class="image-container mt-5 mb-2">
+              <img
+                [src]="previewUrl"
+                alt="Imagen de la prenda"
+                class="centered-and-resized"
+              />
+            </div>
+
+            }@else {
+            <p>Aun no se ha cargado una captura</p>
+            }
+          </div>
+          }
+          <div class="modal-footer">
+            @if(!imagenUrl){
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            }
+            
           </div>
         </form>
       </div>
