@@ -1,5 +1,9 @@
 export class MetodoPago {
 
-    idMetodopago: number;
+    idMetodoPago: number;
     nombre: string;
+
+    constructor(){
+        this.idMetodoPago = 0;
+    }
 }

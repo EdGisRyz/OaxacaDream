@@ -182,7 +182,7 @@
               required
             >
               <option value="" disabled selected>Seleccion un metodo de pago</option>
-              @for (metodo of metodos; track metodo.idMetodopago){
+              @for (metodo of metodos; track metodo.idMetodoPago){
               <option [ngValue]="metodo">{{ metodo.nombre }}</option>
               }
             </select>

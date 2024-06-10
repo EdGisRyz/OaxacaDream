@@ -1,1 +1,113 @@
-<p>tabla-metodo-pago works!</p>
+<div class="container">
+    <!-- Tabla de tour -->
+  <div class="row mt-6">
+    <div class="col-md-7 col-7">
+      <!-- card  -->
+      <section id="Empleados">
+        <div class="card">
+          <div class="card-header bg-white py-4 d-flex justify-content-between">
+            <div class="mt-2">
+              <h4><i class="fa-solid fa-users mx-2"></i> Metodos de Pago</h4>
+            </div>
+            <div>
+              <jjwins-alert-messages> </jjwins-alert-messages>
+            </div>
+            <div class="ml-auto">
+              <a
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalMetodoPago"
+                (click)="nuevoMetodoPago()"
+              >
+                <i class="fa-solid fa-plus"></i> Agregar
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th>Nombre</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (metodo of metodosPago; track metodo.idMetodoPago) {
+                <tr>
+                  <td>{{ metodo.nombre }} </td>
+                  <td>
+                    <a
+                      class="btn btn-primary mx-2 my-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalMetodoPago"
+                      (click)="prepararMetodopago(metodo)"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Editar
+                    </a>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Modal generar pago -->
+<div
+  class="modal fade"
+  id="modalMetodoPago"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Completar Datos</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #botonCerrarMetodo
+          (click)="limpiarDatosMetodoPago()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <jjwins-alert-messages> </jjwins-alert-messages>
+        </div>
+        <form #metodoForm="ngForm" (ngSubmit)="accionMetodoPago()">
+          <div class="mb-3">
+            <label for="metodoNombre" class="form-label">Nombre</label>
+            <input
+              type="text"
+              id="metodoNombre"
+              name="nombre"
+              class="form-control"
+              [(ngModel)]="metodoPago.nombre"
+            />
+          </div>
+
+          <div class="modal-footer">
+            @if(metodoPago.idMetodoPago!= 0){
+                <button
+                  class="btn btn-danger"
+                  (click)="eliminarMetodoPago(metodoPago, $event)"
+                >
+                  <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+                }
+                <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
